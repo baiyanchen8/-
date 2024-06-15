@@ -129,5 +129,19 @@ def halftone(image):
     return image
 ```
 1.  遍歷 $pixels_{i,j}$ 
-2. 對每個 pixels 進行 halftone
-3. 對該 pixels 進行 error_diffusion
+2. 對 $pixels_{i,j}$ 進行 halftone
+3. 對 $pixels_{i,j}$ 進行 error_diffusion
+
+
+#### error diffusion Matrix
+使用 Steinberg kernel
+
+$$
+\frac{1}{16}
+\begin{bmatrix}
+  & \times & 7 \\
+ 3 & 5 & 1 &
+\end{bmatrix}
+$$
+
+###  對  C1 & C2  做調整，並且每次調整後對該位元進行 error_diffusion  
