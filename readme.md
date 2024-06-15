@@ -169,26 +169,16 @@ $$
                 channel2 = error_diffusion(channel2, OOasd2, i, j)
 ```
 
-$$ 
-C1C{i,j},C2C_{i,j}=
-\left\{
-\begin{aligned}
-& 255,255 
-& ,if\  SC_{i,j}=255
-\\
-& 255,0 
-& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j}\ \ge C2C_{i,j}  )\ \\
-&&or\ (C1C_{i, j} \ge T\ and\  C2C_{i,j} \lt T )\}
-\\
-&0,255
-& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j} \lt C2C_{i,j}  )\ \\
-&&or\ (C1C_{i, j} \lt T\ and\  C2C_{i,j} \ge T )\}
-\\
-&0,0
-&,if\  SC_{i,j}=0\ and\  (C1C_{i, j} \lt T\ and\ C2C_{i,j} \lt T)
-\\
-\end{aligned}
-\right.
+$$
+C1C_{i,j}, C2C_{i,j} = 
+\begin{cases}
+255, 255 & , \text{if } SC_{i,j} = 255 \\
+255, 0 & , \text{if } SC_{i,j} = 0 \text{ and } (C1C_{i, j} \ge T \text{ and } C2C_{i,j} \ge T \text{ and } C1C_{i, j} \ge C2C_{i,j}) \\
+& \quad \text{or } (C1C_{i, j} \ge T \text{ and } C2C_{i,j} < T) \\
+0, 255 & , \text{if } SC_{i,j} = 0 \text{ and } (C1C_{i, j} \ge T \text{ and } C2C_{i,j} \ge T \text{ and } C1C_{i, j} < C2C_{i,j}) \\
+& \quad \text{or } (C1C_{i, j} < T \text{ and } C2C_{i,j} \ge T) \\
+0, 0 & , \text{if } SC_{i,j} = 0 \text{ and } (C1C_{i, j} < T \text{ and } C2C_{i,j} < T)
+\end{cases}
 $$
 
 ### error diffusion
