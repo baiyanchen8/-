@@ -101,5 +101,33 @@ def to_cmy(image):
 
 **CMY轉換公式**
 
-![alt text](markdown_image/QianJianTec1718438401070.svg)
+![alt text](markdown_image/QianJianTec1718438401070.svg)\
 而因為這裡的 RGB 值域為0~255 因此將 1 改為 255  
+
+### 對SM SY SC  做 halftone + error diffusion 
+
+```python 
+def halftone(image):
+    image = image.astype(np.float32)
+    rows, cols = image.shape
+    for y in range(rows):
+        for x in range(cols):
+            old_pixel = image[y, x]
+            new_pixel = 255 if old_pixel > 128 else 0
+            image[y, x] = new_pixel
+            quant_error = old_pixel - new_pixel
+
+            if x + 1 < cols:
+                image[y, x + 1] += quant_error * 7 / 16
+            if y + 1 < rows:
+                image[y + 1, x] += quant_error * 5 / 16
+                if x - 1 >= 0:
+                    image[y + 1, x - 1] += quant_error * 3 / 16
+                if x + 1 < cols:
+                    image[y + 1, x + 1] += quant_error * 1 / 16
+
+    return image
+```
+1.  遍歷 $pixels_{i,j}$ 
+2. 對每個 pixels 進行 halftone
+3. 對該 pixels 進行 error_diffusion
