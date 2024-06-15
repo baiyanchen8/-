@@ -134,8 +134,8 @@ def halftone(image):
 
 
 #### error diffusion Matrix
-使用 Steinberg kernel
-
+使用 Steinberg kernel\
+#Steinberg_kernel
 $$
 \frac{1}{16}
 \begin{bmatrix}
@@ -206,5 +206,5 @@ def error_diffusion(image, oimage, y, x):
     return image
 ```
 使用更新過後的 pixels 跟未經調整的 pixels相減得到 error \
-再將
+再將error 使用 #Steinberg_kernel 進行擴散
 
