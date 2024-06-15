@@ -64,7 +64,7 @@ def process_images(C1, C2, S, CT1, CT2, ST1, ST2):
                         channel1[i, j], channel2[i, j] = 0, 255
                     else:
                         channel1[i, j], channel2[i, j] = 0, 0
-
+            
                 channel1 = error_diffusion(channel1, OOasd1, i, j)
                 channel2 = error_diffusion(channel2, OOasd2, i, j)
 
@@ -76,7 +76,7 @@ def process_images(C1, C2, S, CT1, CT2, ST1, ST2):
 ```
 
 
-### adjust_levels 
+### 對 C1 C2 & S (image) 調整範圍  
 
 ```python
 def adjust_levels(image, lower, upper):
@@ -87,4 +87,19 @@ def adjust_levels(image, lower, upper):
 ```
 
 透過將圖片使用以下公式調整到 upper & lower 之間
-![white](markdown_image/QianJianTec1718437547350.svg)
+![function](markdown_image/QianJianTec1718437690831.svg)
+
+
+### 對 C1 C2 & S (image) 做 CMY 轉換 
+
+```python
+def to_cmy(image):
+    cmy = 255 - image
+    return cmy[:, :, 0], cmy[:, :, 1], cmy[:, :, 2]
+```
+
+
+**CMY轉換公式**
+
+![alt text](markdown_image/QianJianTec1718438401070.svg)
+而因為這裡的 RGB 值域為0~255 因此將 1 改為 255  
