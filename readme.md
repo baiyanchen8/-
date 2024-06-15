@@ -218,6 +218,9 @@ $$
 $$
 
 ### Result of Encryption
+使用的threshold\
+CT1, CT2 = 15, 200\
+ST1, ST2 = 150, 180\
 在遍歷完所有 pixels 後即可將影像合成並還原成 RGB 影像
 
 <div style="display: flex; justify-content: center;">
@@ -251,3 +254,7 @@ cv2.imwrite('./result_image/reconstruct.png', c3)
 
 ```
 基本上這類型的方法，都是使用簡單相加的方法做decryption
+
+
+### Result of Decryption
+![alt text](markdown_image/reconstruct.png)
