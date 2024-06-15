@@ -17,4 +17,4 @@ for i in range(C2.shape[0]):
         c3[i, j] = C1[i, j] | C2[i, j]  # 對每個像素進行逐位OR操作
 
 # 儲存疊合後的影像
-cv2.imwrite('./result_image/reconstruct2.png', c3)
+cv2.imwrite('./result_image/reconstruct.png', c3)
