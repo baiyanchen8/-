@@ -224,3 +224,22 @@ $$
   <img src="markdown_image/Share1.png" alt="alt text" style="width: 45%; margin-right: 5px;">
   <img src="markdown_image/Share2.png" alt="alt text" style="width: 45%; margin-left: 5px;">
 </div>
+
+### Decryption
+
+```python
+import cv2
+import numpy as np
+C1 = cv2.imread('./result_image/Share1.png')
+C2 = cv2.imread('./result_image/Share2.png')
+
+c3 = np.zeros(C2.shape, dtype=np.uint8)
+
+for i in range(C2.shape[0]):
+    for j in range(C2.shape[1]):
+        c3[i, j] = np.clip(C1[i, j] + C2[i, j], 0, 255)
+
+cv2.imwrite('./result_image/reconstruct.png', c3)
+
+```
+基本上這類型的方法，都是使用簡單相加的方法做decryption

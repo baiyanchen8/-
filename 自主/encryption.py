@@ -124,9 +124,13 @@ C1 = C1.astype(np.float32)
 C2 = C2.astype(np.float32)
 S = S.astype(np.float32)
 
+# me
 CT1, CT2 = 15, 200
 ST1, ST2 = 150, 180
 
+# 論
+# CT1, CT2 = 155,200
+# ST1, ST2 = 15, 100
 
 Share1, Share2 = process_images(C1, C2, S, CT1, CT2, ST1, ST2)
 
