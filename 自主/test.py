@@ -138,8 +138,8 @@ Share2 = Share2.astype(np.uint8)
 cv2.imwrite('result_image/Share1.png', Share1)
 cv2.imwrite('result_image/Share2.png', Share2)
 
-C1 = cv2.imread('result_image/Share1.png')
-C2 = cv2.imread('result_image/Share2.png')
+C1 = cv2.imread('./result_image/Share1.png')
+C2 = cv2.imread('./result_image/Share2.png')
 
 C1 = to_cmy_2(C1)
 C2 = to_cmy_2(C2)
@@ -151,7 +151,7 @@ for i in range(C2.shape[0]):
         c3[i, j] = np.clip(C1[i, j] + C2[i, j], 0, 255)
 
 
-cv2.imwrite('/reconstruct.png', c3)
+cv2.imwrite('./result_image/reconstruct.png', c3)
 
 ###################################################################################
 
