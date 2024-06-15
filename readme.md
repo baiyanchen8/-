@@ -177,10 +177,12 @@ C1C{i,j},C2C_{i,j}=
 & ,if\  SC_{i,j}=255
 \\
 & 255,0 
-& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j}\ \ge C2C_{i,j}  )\ \\&&or\ (C1C_{i, j} \ge T\ and\  C2C_{i,j} \lt T )\}
+& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j}\ \ge C2C_{i,j}  )\ \\
+&&or\ (C1C_{i, j} \ge T\ and\  C2C_{i,j} \lt T )\}
 \\
 &0,255
-& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j} \lt C2C_{i,j}  )\ \\&&or\ (C1C_{i, j} \lt T\ and\  C2C_{i,j} \ge T )\}
+& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j} \lt C2C_{i,j}  )\ \\
+&&or\ (C1C_{i, j} \lt T\ and\  C2C_{i,j} \ge T )\}
 \\
 &0,0
 &,if\  SC_{i,j}=0\ and\  (C1C_{i, j} \lt T\ and\ C2C_{i,j} \lt T)
