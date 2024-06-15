@@ -20,6 +20,71 @@
 
 ## 實做說明 
 
-```python
 
+### process_images 為整個加密的流程控制
+
+```python
+def process_images(C1, C2, S, CT1, CT2, ST1, ST2):
+
+    T = (CT1 + CT2) / 2
+
+#######################################  對 C1 C2 & S (image) 調整範圍 
+    C1_adj = adjust_levels(C1, CT1, CT2)
+    C2_adj = adjust_levels(C2, CT1, CT2)
+    S_adj = adjust_levels(S, ST1, ST2)
+
+#######################################  對 C1 C2 & S (image) 做 CMY 轉換 
+    C1C, C1M, C1Y = to_cmy(C1_adj)
+    C2C, C2M, C2Y = to_cmy(C2_adj)
+    SC, SM, SY = to_cmy(S_adj)
+    OC1C, OC1M, OC1Y = C1C.copy(), C1M.copy(), C1Y.copy()
+    OC2C, OC2M, OC2Y = C2C.copy(), C2M.copy(), C2Y.copy()
+
+####################################### 對SM SY SC  做 halftone + error diffusion 
+    SC = halftone(SC)
+    SM = halftone(SM)
+    SY = halftone(SY)
+
+####################################### 對  C1 & C2  做調整，並且每次調整後對該位元進行 error_diffusion  
+    for channel1, channel2, S_channel, OOasd1, OOasd2 in [(C1C, C2C, SC, OC1C, OC2C), (C1M, C2M, SM, OC1M, OC2M), (C1Y, C2Y, SY, OC1Y, OC2Y)]:
+        for i in range(SC.shape[0]):
+            for j in range(SC.shape[1]):
+                if S_channel[i, j] == 255:
+                    channel1[i, j] = 255
+                    channel2[i, j] = 255
+                elif S_channel[i, j] == 0:
+                    if channel1[i, j] >= T and channel2[i, j] >= T:
+                        if channel1[i, j] > channel2[i, j]:
+                            channel1[i, j], channel2[i, j] = 255, 0
+                        else:
+                            channel1[i, j], channel2[i, j] = 0, 255
+                    elif channel1[i, j] >= T:
+                        channel1[i, j], channel2[i, j] = 255, 0
+                    elif channel2[i, j] >= T:
+                        channel1[i, j], channel2[i, j] = 0, 255
+                    else:
+                        channel1[i, j], channel2[i, j] = 0, 0
+
+                channel1 = error_diffusion(channel1, OOasd1, i, j)
+                channel2 = error_diffusion(channel2, OOasd2, i, j)
+
+
+    Share1 = merge_image(C1C, C1M, C1Y)
+    Share2 = merge_image(C2C, C2M, C2Y)
+
+    return Share1, Share2
 ```
+
+
+### adjust_levels 
+
+```python
+def adjust_levels(image, lower, upper):
+    img_min = np.min(image) #0
+    img_max = np.max(image) #255
+    adjusted = (image - img_min) / (img_max - img_min) * (upper - lower) + lower
+    return adjusted
+```
+
+透過將圖片使用以下公式調整到 upper & lower 之間
+![white](markdown_image/QianJianTec1718437547350.svg)

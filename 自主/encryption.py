@@ -81,8 +81,6 @@ def process_images(C1, C2, S, CT1, CT2, ST1, ST2):
     SM = halftone(SM)
     SY = halftone(SY)
 
-
-
     for channel1, channel2, S_channel, OOasd1, OOasd2 in [(C1C, C2C, SC, OC1C, OC2C), (C1M, C2M, SM, OC1M, OC2M), (C1Y, C2Y, SY, OC1Y, OC2Y)]:
         for i in range(SC.shape[0]):
             for j in range(SC.shape[1]):
