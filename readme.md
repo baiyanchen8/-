@@ -9,13 +9,13 @@
 
 ## 使用說明
 ### encryption
-在 "自主/resource_image" 的資料節夾下放入: C1.png C2.png & S.png/
-其中 C1.png & C2.png 為分享影像之基礎/
-而 S.png 為機密圖像/ 
+在 "自主/resource_image" 的資料節夾下放入: C1.png C2.png & S.png\
+其中 C1.png & C2.png 為分享影像之基礎\
+而 S.png 為機密圖像\
 執行 encryption.py 即可看到在  "自主/result_image" 下產生 Share1.png & Share2.png
 
 ### decrption
-在有Share1.png & Share2.png 存在於 "自主/result_image" 下時/
+在有Share1.png & Share2.png 存在於 "自主/result_image" 下時\
 直接執行decryption.py 即可穫得解碼影像
 
 ## 實做說明 
@@ -145,3 +145,74 @@ $$
 $$
 
 ###  對  C1 & C2  做調整，並且每次調整後對該位元進行 error_diffusion  
+```python
+   for channel1, channel2, S_channel, OOasd1, OOasd2 in [(C1C, C2C, SC, OC1C, OC2C), (C1M, C2M, SM, OC1M, OC2M), (C1Y, C2Y, SY, OC1Y, OC2Y)]:
+        for i in range(SC.shape[0]):
+            for j in range(SC.shape[1]):
+                if S_channel[i, j] == 255:
+                    channel1[i, j] = 255
+                    channel2[i, j] = 255
+                elif S_channel[i, j] == 0:
+                    if channel1[i, j] >= T and channel2[i, j] >= T:
+                        if channel1[i, j] > channel2[i, j]:
+                            channel1[i, j], channel2[i, j] = 255, 0
+                        else:
+                            channel1[i, j], channel2[i, j] = 0, 255
+                    elif channel1[i, j] >= T:
+                        channel1[i, j], channel2[i, j] = 255, 0
+                    elif channel2[i, j] >= T:
+                        channel1[i, j], channel2[i, j] = 0, 255
+                    else:
+                        channel1[i, j], channel2[i, j] = 0, 0
+
+                channel1 = error_diffusion(channel1, OOasd1, i, j)
+                channel2 = error_diffusion(channel2, OOasd2, i, j)
+```
+
+$$ 
+C1C{i,j},C2C_{i,j}=
+\left\{
+\begin{aligned}
+& 255,255 
+& ,if\  SC_{i,j}=255
+\\
+& 255,0 
+& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j}\ \ge C2C_{i,j}  )\ \\&&or\ (C1C_{i, j} \ge T\ and\  C2C_{i,j} \lt T )\}
+\\
+&0,255
+& ,if\  SC_{i,j}=0\ and\ \{ (C1C_{i, j} \ge T\ and\ C2C_{i,j} \ge T\ and\ C1C_{i, j} \lt C2C_{i,j}  )\ \\&&or\ (C1C_{i, j} \lt T\ and\  C2C_{i,j} \ge T )\}
+\\
+&0,0
+&,if\  SC_{i,j}=0\ and\  (C1C_{i, j} \lt T\ and\ C2C_{i,j} \lt T)
+\\
+\end{aligned}
+\right.
+$$
+
+### error diffusion
+```python
+def error_diffusion(image, oimage, y, x):
+    old_pixel = (oimage[y, x])
+    new_pixel = (image[y, x])
+    error = old_pixel - new_pixel
+    rows, cols = len(image), len(image[0])
+    value = 255
+    n = 3
+    if x + 1 < cols:
+        image[y, x + 1] += (error * 7 / 16)
+        image[y, x + 1] = np.clip(image[y, x + 1], 0, 255)
+    if y + 1 < rows:
+        image[y + 1, x] += (error * 5 / 16)
+        image[y + 1, x] = np.clip(image[y + 1, x], 0, 255)
+        if x - 1 >= 0:
+            image[y + 1, x - 1] += (error * 3 / 16)
+            image[y + 1, x - 1] = np.clip(image[y + 1, x - 1], 0, 255)
+        if x + 1 < cols:
+            image[y + 1, x + 1] += (error * 1 / 16)
+            image[y + 1, x + 1] = np.clip(image[y + 1, x + 1], 0, 255)
+
+    return image
+```
+使用更新過後的 pixels 跟未經調整的 pixels相減得到 error \
+再將
+
