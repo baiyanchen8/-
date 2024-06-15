@@ -7,7 +7,18 @@
 
 使用 python 作為程式語言，並且使用 opencv-python 作為主要的函式庫用於處理影像
 
-## 時最說明 
+## 使用說明
+### encryption
+在 "自主/resource_image" 的資料節夾下放入: C1.png C2.png & S.png/
+其中 C1.png & C2.png 為分享影像之基礎/
+而 S.png 為機密圖像/ 
+執行 encryption.py 即可看到在  "自主/result_image" 下產生 Share1.png & Share2.png
+
+### decrption
+在有Share1.png & Share2.png 存在於 "自主/result_image" 下時/
+直接執行decryption.py 即可穫得解碼影像
+
+## 實做說明 
 
 ```python
 

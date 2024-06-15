@@ -135,26 +135,11 @@ Share1, Share2 = process_images(C1, C2, S, CT1, CT2, ST1, ST2)
 Share1 = Share1.astype(np.uint8)
 Share2 = Share2.astype(np.uint8)
 
-cv2.imwrite('result_image/Share1.png', Share1)
-cv2.imwrite('result_image/Share2.png', Share2)
-
-C1 = cv2.imread('./result_image/Share1.png')
-C2 = cv2.imread('./result_image/Share2.png')
-
 C1 = to_cmy_2(C1)
 C2 = to_cmy_2(C2)
 
-c3 = np.zeros(C2.shape, dtype=np.uint8)
-
-for i in range(C2.shape[0]):
-    for j in range(C2.shape[1]):
-        c3[i, j] = np.clip(C1[i, j] + C2[i, j], 0, 255)
-
-
-cv2.imwrite('./result_image/reconstruct.png', c3)
-
-###################################################################################
-
+cv2.imwrite('result_image/Share1.png', Share1)
+cv2.imwrite('result_image/Share2.png', Share2)
 def cmy_to_rgb_test(C, M, Y):
     R = 255 - C
     G = 255 - M
