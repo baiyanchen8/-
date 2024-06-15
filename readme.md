@@ -19,7 +19,7 @@
 直接執行decryption.py 即可穫得解碼影像
 
 ## 實做說明 
-
+此章節會說明我們的 code 中的所有細節
 
 ### process_images 為整個加密的流程控制
 
@@ -135,7 +135,7 @@ def halftone(image):
 
 #### error diffusion Matrix
 使用 Steinberg kernel\
-#Steinberg_kernel
+
 $$
 \frac{1}{16}
 \begin{bmatrix}
@@ -206,5 +206,21 @@ def error_diffusion(image, oimage, y, x):
     return image
 ```
 使用更新過後的 pixels 跟未經調整的 pixels相減得到 error \
-再將error 使用 #Steinberg_kernel 進行擴散
+再將error 使用 Steinberg kernel 進行擴散
 
+
+$$
+\frac{1}{16}
+\begin{bmatrix}
+  & \times & 7 \\
+ 3 & 5 & 1 &
+\end{bmatrix}
+$$
+
+### Result of Encryption
+在遍歷完所有 pixels 後即可將影像合成並還原成 RGB 影像
+
+<div style="display: flex; justify-content: center;">
+  <img src="markdown_image/Share1.png" alt="alt text" style="width: 45%; margin-right: 5px;">
+  <img src="markdown_image/Share2.png" alt="alt text" style="width: 45%; margin-left: 5px;">
+</div>
